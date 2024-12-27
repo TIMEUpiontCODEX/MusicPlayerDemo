@@ -1,5 +1,6 @@
 package com.example.musicplayer.View
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -67,15 +68,17 @@ import com.example.musicplayer.R
 import com.example.musicplayer.ViewModel.UserViewModel
 import kotlinx.coroutines.launch
 import coil.compose.rememberAsyncImagePainter
+import com.example.musicplayer.LocalNavHostController
 import com.example.musicplayer.Model.AlbumModel
 import com.example.musicplayer.Model.UserModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun User(navController: NavController){
+fun User(){
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
+    val navController=LocalNavHostController.current
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -184,6 +187,7 @@ fun User(navController: NavController){
             val user=UserModel()
             val userViewModel = UserViewModel(album,user)
             UserContent(modifier = Modifier.padding(innerPadding),userViewModel)
+            PlayerCard(modifier = Modifier.padding(top = 375.dp))
         }
     }
 }
@@ -191,8 +195,13 @@ fun User(navController: NavController){
 
 @Composable
 fun AlbumCard(album: Album) {
+    val navController=LocalNavHostController.current
     Column(
         horizontalAlignment = Alignment.Start,
+        modifier = Modifier.clickable {
+            // 导航到详情页面，并传递专辑ID
+            navController.navigate("albumDetail/${album.id}")
+        }
     ) {
         Card(
             modifier = Modifier
@@ -227,9 +236,6 @@ fun AlbumCard(album: Album) {
     }
 }
 
-
-
-
 @Composable
 fun UserContent(modifier: Modifier,viewModel: UserViewModel = viewModel()) {
     LaunchedEffect(Unit) {
@@ -250,7 +256,7 @@ fun UserContent(modifier: Modifier,viewModel: UserViewModel = viewModel()) {
             contentDescription = "用户头像",
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .padding(top = 20.dp)
+                .padding(top = 10.dp)
                 .size(80.dp)
                 .clip(CircleShape)
         )
@@ -377,7 +383,7 @@ fun UserContent(modifier: Modifier,viewModel: UserViewModel = viewModel()) {
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(500.dp)
+                .height(380.dp)
         ) {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
@@ -395,6 +401,4 @@ fun UserContent(modifier: Modifier,viewModel: UserViewModel = viewModel()) {
 @Preview
 @Composable
 fun UserPreview(){
-//    val navController = rememberNavController()
-//    User(navController)
 }

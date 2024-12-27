@@ -69,4 +69,7 @@ dependencies {
     androidTestImplementation(libs.androidx.navigation.testing)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.coil.compose)
+    implementation(libs.androidx.media3.media3.exoplayer)
+    implementation(libs.androidx.media3.media3.exoplayer.dash)
+    implementation(libs.androidx.media3.media3.ui)
 }
