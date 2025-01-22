@@ -38,9 +38,13 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.musicplayer.LocalNavHostController
 import com.example.musicplayer.Model.Album
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
@@ -55,6 +59,7 @@ fun AlbumDetailScreen(albumId: String) {
     val albumModel = AlbumModel()
     val player = LocalExoPlayer.current
     val albumState = remember { mutableStateOf<Album?>(null) }
+    var showDialog by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) {
         albumState.value = albumModel.getAlbumById(albumId)
     }
@@ -149,6 +154,7 @@ fun AlbumDetailScreen(albumId: String) {
                                     ) // 分隔线
                                 }
                                 Row(modifier = Modifier.clickable(onClick = {
+                                    showDialog=true
                                         player.addMediaItem(MediaItem)
                                     player.play()
                                 })) {
@@ -195,5 +201,21 @@ fun AlbumDetailScreen(albumId: String) {
             }
 
         }
+    }
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { Text("当前播放") },
+            text = {
+                player?.let {
+                    Text("标题: ${it.mediaMetadata.title}\n\n")
+                } ?: Text("没有正在播放的音乐")
+            },
+            confirmButton = {
+                TextButton(onClick = { showDialog = false }) {
+                    Text("关闭")
+                }
+            }
+        )
     }
 }

@@ -6,12 +6,15 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,7 +31,8 @@ import androidx.compose.ui.zIndex
 import androidx.media3.exoplayer.ExoPlayer
 import com.example.musicplayer.LocalExoPlayer
 import com.example.musicplayer.R
-
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 @Composable
 fun PlayerCard(modifier: Modifier) {
 
@@ -37,15 +41,15 @@ fun PlayerCard(modifier: Modifier) {
         val cplayer = LocalExoPlayer.current
         // 获取当前媒体项信息
         val currentMediaItem = cplayer.currentMediaItem
-
+        var showDialog by remember { mutableStateOf(false) }
         val title = currentMediaItem?.mediaMetadata?.title.toString()
         val artist = currentMediaItem?.mediaMetadata?.artist.toString()
-        val duration = cplayer.duration // 媒体总时长（以毫秒为单位）
-        val currentPosition = cplayer.currentPosition // 当前播放位置（以毫秒为单位）
+        val duration = cplayer.duration
+        val currentPosition = cplayer.currentPosition
 
         Row(
             modifier = modifier
-                .padding( start = 25.dp, end = 3.dp, bottom = 0.dp), // 根据需要调整padding
+                .padding( start = 25.dp, end = 3.dp, bottom = 0.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -73,7 +77,7 @@ fun PlayerCard(modifier: Modifier) {
                 )
             }
             IconButton(
-                onClick = { /* TODO: 处理播放操作 */ },
+                onClick = { showDialog = true },
                 modifier = modifier.padding(8.dp)
             ) {
                 Icon(
@@ -82,6 +86,22 @@ fun PlayerCard(modifier: Modifier) {
                     tint = Color.Black
                 )
             }
+    }
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { Text("当前播放") },
+            text = {
+                currentMediaItem?.let {
+                    Text("标题: ${it.mediaMetadata.title}\n\n")
+                } ?: Text("没有正在播放的音乐")
+            },
+            confirmButton = {
+                TextButton(onClick = { showDialog = false }) {
+                    Text("关闭")
+                }
+            }
+        )
     }
 }
 
