@@ -5,7 +5,7 @@ import random
 import string
 
 # API 基础配置
-BASE_URL = "http://localhost:8000/catalog/api/"  # 更新为正确的API地址
+BASE_URL = "http://124.70.183.156:8000/catalog/api/"  # 更新为正确的API地址
 JWT_TOKEN = None  # JWT令牌存储
 
 # 请求头配置
