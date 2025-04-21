@@ -1,0 +1,17 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>MusicPlayer Home</h1>
+
+  <p>Welcome to <em>Musicplayer</em>, a very basic Django website developed as a tutorial example on the Mozilla Developer Network.</p>
+
+  <h2>Dynamic content</h2>
+
+  <p>The Player has the following record counts:</p>
+  <ul>
+    <li><strong>Songs:</strong> {{ num_songs }}</li>
+    <li><strong>Genres:</strong> {{ num_genre }}</li>
+    <li><strong>Songs available:</strong> {{ num_instances_available }}</li>
+    <li><strong>Authors:</strong> {{ num_authors }}</li>
+  </ul>
+{% endblock %}
