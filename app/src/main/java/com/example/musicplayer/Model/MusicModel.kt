@@ -2,5 +2,5 @@ package com.example.musicplayer.Model
 
 data class Music(
     val title:String,
-    val musicurl:String="https://m701.music.126.net/20250122163921/f67513e2c722b28d7e9312c3e23bfc4a/jdymusic/obj/wo3DlMOGwrbDjj7DisKw/14096408353/ebda/98cb/780b/4022e2f733132e400aad9d05d3994dca.mp3?vuutv=AwNes1vgLRML6qJMKWEfdi0z+JeDptrw+1QCmKtclfi6S/lm09YyHoim2ZhbHmIJQwBh+qSKBNJu4l+41DZG0LLEWMwN2U7aUZ0E6QA88cHq0XR9eNo9VME8acHq3PVj9q4+FPuJKW7GVo4d0ExaGQxmzsey2DMpZZc4s8sCzy2gxMGyC+sY9n59NEHXy2JJcilpTHB6vyk4z2oBiy2Yq0Y6YSUvVWMi/tK7+gBVmgMlIkUVMAMMxV9OhBuGsGDXS3TOhJf7Ww9pMbpAFs5UoOt69MPvHkJZ36fGkjKYTJv6dmfjHJvFlEK5AyIDE2RG0o2MH9ajMQde8XfWD0XMAgafIWMHkSKfcmRPVfdEPq41iUmN0GXw3+/W+oUGYMnP"
+    val musicid:String=""
 )

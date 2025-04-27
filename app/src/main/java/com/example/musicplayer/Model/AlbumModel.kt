@@ -16,7 +16,7 @@ class AlbumModel {
         val musicList2 = mutableListOf<Music>()
         val musicList3 = mutableListOf<Music>()
         val musicList4 = mutableListOf<Music>()
-        musicList1.add(Music(title = "Mojito"))
+        musicList1.add(Music(title = "Mojito", musicid = "1"))
         musicList2.add(Music(title = "APT."))
         musicList3.add(Music(title = "Starting Up"))
         musicList3.add(Music(title = "I HATE MY PUTER -ALL MY ENEMIES ARE INSIDE IT-"))

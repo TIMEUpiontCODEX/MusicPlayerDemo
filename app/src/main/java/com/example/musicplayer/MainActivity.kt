@@ -1,4 +1,5 @@
 package com.example.musicplayer
+import RegisterScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -44,11 +45,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.musicplayer.Model.AlbumModel
 import com.example.musicplayer.Model.PlayerModel
+import com.example.musicplayer.Model.UserRepositoryImpl
 import com.example.musicplayer.View.AlbumDetailScreen
 import com.example.musicplayer.View.Login
 import com.example.musicplayer.View.Music
 import com.example.musicplayer.View.User
+import com.example.musicplayer.ViewModel.PlayerViewModel
+import com.example.musicplayer.ViewModel.UserViewModel
 
 val LocalExoPlayer = compositionLocalOf<ExoPlayer> { error("No ExoPlayer provided") }
 class MainActivity : ComponentActivity() {
@@ -57,7 +62,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-
             val context = LocalContext.current
             val playerModel = remember { PlayerModel(context) }
             CompositionLocalProvider(LocalExoPlayer provides playerModel.player) {
@@ -72,24 +76,31 @@ object RouteConfig {
     const val ROUTE_MENU = "menu"
     const val ROUTE_SUGGEST = "suggest"
     const val ROUTE_LOGIN="login"
+    const val ROUTE_REGISTER="register"
 }
 
 val LocalNavHostController = staticCompositionLocalOf<NavHostController> { error("No NavHostController provided") }
 @Composable
 fun HostController(modifier: Modifier){
     val navController= rememberNavController()
+    val album= AlbumModel()
+    val userre= UserRepositoryImpl()
+    val userViewModel = UserViewModel(album,userre)
+    val playerViewModel=PlayerViewModel()
+
     CompositionLocalProvider(LocalNavHostController provides navController) {
         NavHost(navController = navController, startDestination = RouteConfig.ROUTE_MENU) {
-            composable(RouteConfig.ROUTE_USER) { User() }
+            composable(RouteConfig.ROUTE_USER) { User(userViewModel) }
             composable(RouteConfig.ROUTE_MENU) { Music() }
-            composable(RouteConfig.ROUTE_LOGIN) { Login() }
+            composable(RouteConfig.ROUTE_LOGIN) { Login(userViewModel) }
+            composable(RouteConfig.ROUTE_REGISTER) { RegisterScreen(userViewModel) }
             composable(
                 route = "albumDetail/{albumId}",
                 arguments = listOf(navArgument("albumId") { type = NavType.StringType })
             ) { backStackEntry ->
                 val albumId = backStackEntry.arguments?.getString("albumId")
                 albumId?.let {
-                    AlbumDetailScreen(albumId = it)
+                    AlbumDetailScreen(albumId = it,userViewModel,playerViewModel)
                 }
             }
         }

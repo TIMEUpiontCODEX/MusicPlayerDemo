@@ -54,6 +54,12 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.espresso.core)
+    implementation(libs.androidx.transition)
+    implementation(libs.androidx.transition)
+    implementation(libs.androidx.transition)
+    implementation(libs.androidx.transition)
+    implementation(libs.androidx.transition)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -72,4 +78,10 @@ dependencies {
     implementation(libs.androidx.media3.media3.exoplayer)
     implementation(libs.androidx.media3.media3.exoplayer.dash)
     implementation(libs.androidx.media3.media3.ui)
+    implementation(libs.androidx.material3)
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.gson)
+    implementation(libs.okhttp.core)
+    debugImplementation(libs.okhttp.logging)
+
 }

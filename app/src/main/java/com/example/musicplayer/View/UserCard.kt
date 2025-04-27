@@ -70,12 +70,15 @@ import kotlinx.coroutines.launch
 import coil.compose.rememberAsyncImagePainter
 import com.example.musicplayer.LocalNavHostController
 import com.example.musicplayer.Model.AlbumModel
+import com.example.musicplayer.Model.User
 import com.example.musicplayer.Model.UserModel
+import com.example.musicplayer.Model.UserRepository
+import com.example.musicplayer.Model.UserRepositoryImpl
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun User(){
+fun User(viewModel: UserViewModel = viewModel()){
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val navController=LocalNavHostController.current
@@ -183,10 +186,8 @@ fun User(){
                 }
             },
         ) {  innerPadding ->
-            val album=AlbumModel()
-            val user=UserModel()
-            val userViewModel = UserViewModel(album,user)
-            UserContent(modifier = Modifier.padding(innerPadding),userViewModel)
+
+            UserContent(modifier = Modifier.padding(innerPadding),viewModel)
             PlayerCard(modifier = Modifier.padding(top = 375.dp))
         }
     }
@@ -240,10 +241,12 @@ fun AlbumCard(album: Album) {
 fun UserContent(modifier: Modifier,viewModel: UserViewModel = viewModel()) {
     LaunchedEffect(Unit) {
         viewModel.loadAlbums()
-        viewModel.loadUser()
+//        viewModel.loadUser()
     }
     val albums by viewModel.albums.collectAsState(emptyList())
-    val users by viewModel.users.collectAsState(null)
+    val navController=LocalNavHostController.current
+   val userstate by viewModel.uiState.collectAsState()
+    val users:User=userstate.user ?: User.EMPTY
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -269,15 +272,22 @@ fun UserContent(modifier: Modifier,viewModel: UserViewModel = viewModel()) {
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .padding(top = 10.dp)
-
+                    .clickable( enabled = users?.User_token == "", // token为空时启用点击
+                        onClick = {
+                            // 点击处理逻辑
+                            if (users?.User_token == "") {
+                                navController.navigate("login")
+                            }})
             )
-            Image(
-                painter = painterResource(id = R.drawable.vip),
-                contentDescription = "vip标识",
-                modifier = Modifier
-                    .size(50.dp)
-                    .padding(start = 5.dp)
-            )
+            if (userstate.isPremium) {
+                Image(
+                    painter = painterResource(id = R.drawable.vip),
+                    contentDescription = "vip标识",
+                    modifier = Modifier
+                        .size(50.dp)
+                        .padding(start = 5.dp)
+                )
+            }
         }
         Row(
             modifier = Modifier
